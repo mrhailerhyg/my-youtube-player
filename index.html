@@ -16,6 +16,8 @@
     <button id="nextButton" onclick="goToNext()" style="display: inline;">Next</button>
 </div>
 
+<a href="outbe.html">Visit Outbe</a> <!-- Move this line here -->
+
 <script>
     var player;
     var autoSeekInterval;
@@ -34,7 +36,7 @@
     function onPlayerReady(event) {
         // Start autoplay after 15 seconds
         setTimeout(startVideo, 15000);
-
+        
         // Start auto-seek after a random delay between 40 and 100 seconds
         setTimeout(() => {
             if (isAutoSeeking) {
@@ -105,7 +107,4 @@
 </script>
 
 </body>
-
-    <a href="haus1.html">Visit Outbe</a>
-
 </html>
