@@ -6,16 +6,16 @@
     <title>YouTube Player</title>
 </head>
 <body>
-    
-<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/p0nQ6ovKPlk?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/f0waqiKGQtU?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div>
     <button onclick="seek(-10)">Backward 10s</button>
     <button onclick="seek(10)">Forward 10s</button>
     <button id="toggleSeekButton" onclick="toggleAutoSeek()">Disable Auto Seek</button>
-    <button id="nextButton" onclick="goToNext()" style="display: inline;">Next</button>
+    <button onclick="openNextUrl()">Next Video</button> <!-- New Button -->
 </div>
-<a href="outbe.html">Visit Outbe</a> <!-- Move this line here -->
+
 <script>
     var player;
     var autoSeekInterval;
@@ -25,8 +25,7 @@
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('youtubePlayer', {
             events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
+                'onReady': onPlayerReady
             }
         });
     }
@@ -34,20 +33,13 @@
     function onPlayerReady(event) {
         // Start autoplay after 15 seconds
         setTimeout(startVideo, 15000);
-        
+
         // Start auto-seek after a random delay between 40 and 100 seconds
         setTimeout(() => {
             if (isAutoSeeking) {
                 startAutoSeek();
             }
         }, Math.random() * (60000 - 40000) + 40000); // Random delay between 40 to 100 seconds
-    }
-
-    function onPlayerStateChange(event) {
-        // Check if the video has ended
-        if (event.data === YT.PlayerState.ENDED) {
-            setTimeout(goToNext, Math.random() * (30000 - 15000) + 15000); // Redirect after 15 to 30 seconds
-        }
     }
 
     function seek(seconds) {
@@ -93,8 +85,10 @@
         }
     }
 
-    function goToNext() {
-        window.location.href = "https://mrhailerhyg.github.io/my-youtube-player/outbe.html"; // Redirect to the specified URL
+    // Function to open the next URL in a new tab
+    function openNextUrl() {
+        const nextUrl = 'https://en.wikipedia.org/wiki/Deutsche_Welle'; // Replace with your desired URL
+        window.open(nextUrl, '_blank');
     }
 
     // Load the IFrame Player API code asynchronously
