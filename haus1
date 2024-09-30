@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Player</title>
+</head>
+<body>
+
+<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/yxG8ckPgyug?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<div>
+    <button onclick="seek(-10)">Backward 10s</button>
+    <button onclick="seek(10)">Forward 10s</button>
+    <button id="toggleSeekButton" onclick="toggleAutoSeek()">Disable Auto Seek</button>
+    <button id="nextButton" onclick="goToNext()" style="display: inline;">Next</button>
+</div>
+
+<script>
+    var player;
+    var autoSeekInterval;
+    var isAutoSeeking = true; // Set to true to enable by default
+
+    // Create a YouTube player object
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtubePlayer', {
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        // Start autoplay after 15 seconds
+        setTimeout(startVideo, 15000);
+
+        // Start auto-seek after a random delay between 40 and 100 seconds
+        setTimeout(() => {
+            if (isAutoSeeking) {
+                startAutoSeek();
+            }
+        }, Math.random() * (60000 - 40000) + 40000); // Random delay between 40 to 100 seconds
+    }
+
+    function onPlayerStateChange(event) {
+        // Check if the video has ended
+        if (event.data === YT.PlayerState.ENDED) {
+            setTimeout(goToNext, Math.random() * (30000 - 15000) + 15000); // Redirect after 15 to 30 seconds
+        }
+    }
+
+    function seek(seconds) {
+        if (player) {
+            const currentTime = player.getCurrentTime();
+            player.seekTo(currentTime + seconds, true);
+        }
+    }
+
+    function startVideo() {
+        if (player) {
+            player.playVideo(); // Start the video when needed
+        }
+    }
+
+    function startAutoSeek() {
+        if (!autoSeekInterval) {
+            autoSeekInterval = setInterval(() => {
+                // Randomly choose forward or backward
+                var randomAction = Math.random() < 0.5 ? 1 : -1; 
+                // Random seconds between 5 and 15
+                var randomSeconds = Math.floor(Math.random() * 11) + 5; 
+                seek(randomAction * randomSeconds);
+            }, Math.floor(Math.random() * 10000) + 20000); // Random interval between 20 to 30 seconds
+        }
+    }
+
+    function stopAutoSeek() {
+        clearInterval(autoSeekInterval);
+        autoSeekInterval = null; // Reset interval
+    }
+
+    function toggleAutoSeek() {
+        isAutoSeeking = !isAutoSeeking;
+        const button = document.getElementById('toggleSeekButton');
+
+        if (isAutoSeeking) {
+            startAutoSeek();
+            button.textContent = 'Disable Auto Seek';
+        } else {
+            stopAutoSeek();
+            button.textContent = 'Enable Auto Seek';
+        }
+    }
+
+    function goToNext() {
+        window.location.href = "https://hailerg.blogspot.com/2024/09/jasu2.html"; // Redirect to the specified URL
+    }
+
+    // Load the IFrame Player API code asynchronously
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+</script>
+
+</body>
+</html>
