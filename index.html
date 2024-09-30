@@ -7,12 +7,13 @@
 </head>
 <body>
 
-<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/iRGvz_NUmig?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/p0nQ6ovKPlk?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <div>
     <button onclick="seek(-10)">Backward 10s</button>
     <button onclick="seek(10)">Forward 10s</button>
     <button id="toggleSeekButton" onclick="toggleAutoSeek()">Disable Auto Seek</button>
+    <button id="nextButton" onclick="goToNext()" style="display: inline;">Next</button>
 </div>
 
 <script>
@@ -24,7 +25,8 @@
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('youtubePlayer', {
             events: {
-                'onReady': onPlayerReady
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
             }
         });
     }
@@ -39,6 +41,13 @@
                 startAutoSeek();
             }
         }, Math.random() * (60000 - 40000) + 40000); // Random delay between 40 to 100 seconds
+    }
+
+    function onPlayerStateChange(event) {
+        // Check if the video has ended
+        if (event.data === YT.PlayerState.ENDED) {
+            setTimeout(goToNext, Math.random() * (30000 - 15000) + 15000); // Redirect after 15 to 30 seconds
+        }
     }
 
     function seek(seconds) {
@@ -82,6 +91,10 @@
             stopAutoSeek();
             button.textContent = 'Enable Auto Seek';
         }
+    }
+
+    function goToNext() {
+        window.location.href = "https://hailerg.blogspot.com/2024/09/haus1.html"; // Redirect to the specified URL
     }
 
     // Load the IFrame Player API code asynchronously
